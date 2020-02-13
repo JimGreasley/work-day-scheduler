@@ -40,7 +40,7 @@
 
       // capture the current hour (0 - 23)
       var currentHour = moment().format("HH");
-      var cHtype = typeof currentHour;
+      var cHtype      = typeof currentHour;
       console.log(currentHour, cHtype);
 
       // for testing, override currentHourNum
@@ -53,7 +53,7 @@
       var data        = localStorage.getItem("WorkDaySchedule");
 
       if (!data) {
-          // create new Work Day Schedule array
+          // create new 'empty' Work Day Schedule array
           var work_day_schedule = ["", "", "", "", "", "", "", "", ""];
 /*          var work_day_schedule = [
             "office hours and check in to class on bootcamp spot",
@@ -69,6 +69,7 @@
       } else {
           var work_day_schedule = JSON.parse(data);
       }
+
       console.log(work_day_schedule);
 
       // capture parent node for schedule data
@@ -76,6 +77,7 @@
 
       // create time slot row for each entry in Work Day Schedule array
       work_day_schedule.forEach(createRow);
+
 
       // set Event to save text when button clicked
       $(".saveBtn").click(saveText);
@@ -88,46 +90,57 @@
         var elementHourPM = 0;
 
         //var newTableRow = document.createElement("<tr>");
-        var tRow = $("<div>").addClass("row time-block");
+        var newRow = $("<div>").addClass("row time-block");
 
-        // Create and save references to 3 td elements containing the Title, Year, and Actors from the AJAX response object
-        //  var newTableData1 = document.createElement("<td>");
-        var tCol1 = $("<div>").addClass("col-1 hour");
+        // include "index" as attr in newRow
+        newRow.attr("index", index); 
+
+        // create the columns to hold the timeslot hour, text and save button
+
+        var colHour = $("<div>").addClass("col-1 hour");
         if (elementHour > 12) {
            elementHourPM = elementHour - 12;
-           tCol1.text(elementHourPM + " PM");
+           colHour.text(elementHourPM + " PM");
         } else if (elementHour < 12) {
-           tCol1.text(elementHour + " AM");
+           colHour.text(elementHour + " AM");
         } else {
-           tCol1.text(elementHour + " Noon");
+           colHour.text(elementHour + " Noon");
         }
         
-        var tCol2 = $("<textarea>").addClass("col-10 textarea");
-        tCol2.text(schText);
-          
+        // create textarea element and set its text to schText passed in
+        var colText = $("<textarea>").addClass("col-10 textarea");
+        //colText.text(schText);
+        colText.val(schText);
+        
+        // add class to textarea to indicate whether this timeslot is in the past, present or
+        // future compared to the current hour
         if (elementHour < currentHourNum) {
-          tCol2.addClass("past");
+          colText.addClass("past");
           console.log("past");
         } 
         else if (elementHour > currentHourNum) {
-          tCol2.addClass("future");
+          colText.addClass("future");
           console.log("future");
         } 
         else {
-          tCol2.addClass("present");
+          colText.addClass("present");
           console.log("present");
         }
         
-        var tCol3 = $("<div>").addClass("col-1 saveBtn");
-        tCol3.text("Save btn");
+        var colBtn = $("<div>").addClass("col-1 saveBtn");
+        colBtn.text("Save btn");
+
+        // include "index" as attr in colBtn button
+        colBtn.attr("index", index); 
+
 
         // Append the td elements to the new table row
-        tRow.append(tCol1, tCol2, tCol3);
-        //tRow.append(tCol2);
-        //tRow.append(tCol3);
+        newRow.append(colHour, colText, colBtn);
+        //newRow.append(colText);
+        //newRow.append(colBtn);
 
-        // Append the table row to the Container element
-        $container.append(tRow);
+        // Append the new (timeblock) row to the Container element
+        $container.append(newRow);
       }
 /*
       <form id="intl-form" method="POST">
@@ -139,9 +152,16 @@
 
 */
       function saveText(e) {
-        console.log($(this).text());
+        event.preventDefault();  
+
+        console.log($(this).siblings(".textarea").val());
+        console.log($(this).attr("index"));
+
+        var idx = $(this).attr("index");
+        console.log(typeof idx);
 
         // save updated text in work_day_schedule array
+        work_day_schedule[parseInt(idx)] = $(this).siblings(".textarea").val();
 
         // Save updated work_day_schedule array in local storage
         localStorage.setItem("WorkDaySchedule", JSON.stringify(work_day_schedule));
