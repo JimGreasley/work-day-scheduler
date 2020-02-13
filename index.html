@@ -21,12 +21,6 @@
   </header>
   <div class="container">
     <!-- Timeblocks go here -->
-<!--    <div class="row" text-center>
-      <div class="col-1">Time</div>
-      <div class="col-10">Textarea</div>
-      <div class="col-1">Save</div>
--->
-    </div>
 
   </div>
 
@@ -42,7 +36,7 @@
     $(document).ready(function () {
 
       // set current day within jumbotron
-      $("#currentDay").text(moment().format("dddd, MMMM Qo"));
+      $("#currentDay").text(moment().format("dddd, MMMM Do"));
 
       // capture the current hour (0 - 23)
       var currentHour = moment().format("HH");
@@ -50,8 +44,9 @@
       console.log(currentHour, cHtype);
 
       // for testing, override currentHourNum
-      //var currentHourNum = parseInt(currentHour);
-      var currentHourNum = 12;
+      //var currentHourNum = 12;
+      var currentHourNum = parseInt(currentHour);
+      
 
       // get Work Day Schedule data from local storage
 
@@ -89,7 +84,8 @@
 
       function createRow(schText, index) {
 
-        var elementHour = index + 9;
+        var elementHour   = index + 9;
+        var elementHourPM = 0;
 
         //var newTableRow = document.createElement("<tr>");
         var tRow = $("<div>").addClass("row time-block");
@@ -97,7 +93,14 @@
         // Create and save references to 3 td elements containing the Title, Year, and Actors from the AJAX response object
         //  var newTableData1 = document.createElement("<td>");
         var tCol1 = $("<div>").addClass("col-1 hour");
-        tCol1.text(elementHour);  
+        if (elementHour > 12) {
+           elementHourPM = elementHour - 12;
+           tCol1.text(elementHourPM + " PM");
+        } else if (elementHour < 12) {
+           tCol1.text(elementHour + " AM");
+        } else {
+           tCol1.text(elementHour + " Noon");
+        }
         
         var tCol2 = $("<textarea>").addClass("col-10 textarea");
         tCol2.text(schText);
@@ -126,8 +129,15 @@
         // Append the table row to the Container element
         $container.append(tRow);
       }
+/*
+      <form id="intl-form" method="POST">
+          <label for="msg"></label>
+          <textarea id="msg" name=""></textarea>
+      </form>
+      <label for="intl-text"></label>
+      <input type="text" name="intl-text" id="intl-text" />
 
-
+*/
       function saveText(e) {
         console.log($(this).text());
 
