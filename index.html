@@ -1,49 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
-      integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
-      crossorigin="anonymous"
-    />
-    <link
-      href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="style.css" />
-    <title>Work Day Scheduler</title>
-  </head>
 
-  <body>
-    <header class="jumbotron">
-      <h1 class="display-3">Work Day Scheduler</h1>
-      <p class="lead">A simple calendar app for scheduling your work day</p>
-      <p id="currentDay" class="lead"></p>
-    </header>
-    <div class="container">
-      <!-- Timeblocks go here -->
-      <row class="row">
-        <col class="col">Time</col>
-        <col class="col">Textarea</col>
-        <col class="col">Save</col>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+    integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <title>Work Day Scheduler</title>
+</head>
 
-      </row>
- 
+<body>
+  <header class="jumbotron">
+    <h1 class="display-3">Work Day Scheduler</h1>
+    <p class="lead">A simple calendar app for scheduling your work day</p>
+    <p id="currentDay" class="lead"></p>
+  </header>
+  <div class="container">
+    <!-- Timeblocks go here -->
+<!--    <div class="row" text-center>
+      <div class="col-1">Time</div>
+      <div class="col-10">Textarea</div>
+      <div class="col-1">Save</div>
+-->
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-    <script type="text/javascript">
+  </div>
 
-    </script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+  <!--
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+-->
+  <script type="text/javascript">
 
-  </body>
+    $(document).ready(function () {
+
+      // set current day within jumbotron
+      $("#currentDay").text(moment().format("dddd, MMMM Qo"));
+
+      // capture the current hour (0 - 23)
+      var currentHour = moment().format("HH");
+      var cHtype = typeof currentHour;
+      console.log(currentHour, cHtype);
+
+      // for testing, override currentHourNum
+      //var currentHourNum = parseInt(currentHour);
+      var currentHourNum = 12;
+
+      // get Work Day Schedule data from local storage
+
+      var data        = localStorage.getItem("WorkDaySchedule");
+
+      if (!data) {
+          // create new Work Day Schedule array
+          var work_day_schedule = ["", "", "", "", "", "", "", "", ""];
+/*          var work_day_schedule = [
+            "office hours and check in to class on bootcamp spot",
+            "intense learning activity",
+            "30 minute break for lunch at 11:30",
+            "class resumes",
+            "drink from firehose",
+            "office hours starting at 2:30",
+            "head home",
+            "homework",
+            "more homework"];
+*/
+      } else {
+          var work_day_schedule = JSON.parse(data);
+      }
+      console.log(work_day_schedule);
+
+      // capture parent node for schedule data
+      var $container = $(".container");
+
+      // create time slot row for each entry in Work Day Schedule array
+      work_day_schedule.forEach(createRow);
+
+      // set Event to save text when button clicked
+      $(".saveBtn").click(saveText);
+
+
+
+      function createRow(schText, index) {
+
+        var elementHour = index + 9;
+
+        //var newTableRow = document.createElement("<tr>");
+        var tRow = $("<div>").addClass("row time-block");
+
+        // Create and save references to 3 td elements containing the Title, Year, and Actors from the AJAX response object
+        //  var newTableData1 = document.createElement("<td>");
+        var tCol1 = $("<div>").addClass("col-1 hour");
+        tCol1.text(elementHour);  
+        
+        var tCol2 = $("<textarea>").addClass("col-10 textarea");
+        tCol2.text(schText);
+          
+        if (elementHour < currentHourNum) {
+          tCol2.addClass("past");
+          console.log("past");
+        } 
+        else if (elementHour > currentHourNum) {
+          tCol2.addClass("future");
+          console.log("future");
+        } 
+        else {
+          tCol2.addClass("present");
+          console.log("present");
+        }
+        
+        var tCol3 = $("<div>").addClass("col-1 saveBtn");
+        tCol3.text("Save btn");
+
+        // Append the td elements to the new table row
+        tRow.append(tCol1, tCol2, tCol3);
+        //tRow.append(tCol2);
+        //tRow.append(tCol3);
+
+        // Append the table row to the Container element
+        $container.append(tRow);
+      }
+
+
+      function saveText(e) {
+        console.log($(this).text());
+
+        // save updated text in work_day_schedule array
+
+        // Save updated work_day_schedule array in local storage
+        localStorage.setItem("WorkDaySchedule", JSON.stringify(work_day_schedule));
+            
+      }
+
+    });
+    
+  </script>
+
+</body>
+
 </html>
