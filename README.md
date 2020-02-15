@@ -22,9 +22,3 @@ Refresing the page will re-display the current day's scheduled activities.
 ## Link
 https://jimgreasley.github.io/work-day-scheduler/
 
-
-## Caveats
-The format of the hour column could use improvement.
-Also, some bottom margin after the last timeslot would look better.
-Using an object to store the data would allow for a starting time and a count of the number of timeslots
-to display.  This would allow for a variable number of timeslots per day.

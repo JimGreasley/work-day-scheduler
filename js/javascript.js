@@ -55,7 +55,7 @@
         //  function to create a row for a given timeslot
         //-----------------------------------------------------------------------------------------
   
-        function createRow(schText, index) {
+        function createRow(rowText, index) {
   
           var elementHour   = index + 9;
           var elementHourPM = 0;
@@ -78,11 +78,11 @@
              colHour.text(elementHour + " Noon");
           }
           
-          // create textarea element and set its value to the text ("schText") passed in
+          // create textarea element and set its value to the text ("rowText") passed in
   
           var colText = $("<textarea>").addClass("col-10 textarea");
-          //colText.text(schText);
-          colText.val(schText);
+          //colText.text(rowText);
+          colText.val(rowText);
           
           // add class to textarea to indicate whether this timeslot is in the past, present or
           // future compared to the current hour
@@ -99,7 +99,7 @@
             console.log("present");
           }
           
-          // create button element and set its value to the text ("schText") passed in
+          // create button element and set its value to the text ("rowText") passed in
           var colBtn = $("<button>").addClass("col-1 saveBtn");
           colBtn.text("Save text");
   
