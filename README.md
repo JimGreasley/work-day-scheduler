@@ -23,6 +23,6 @@ jQuery, Momentjs, local storage (JSON format)
 
 
 ## Links
-https://github.com/JimGreasley/Weather-Dashboard
-https://rhubarb-crumble-97219.herokuapp.com
+https://github.com/JimGreasley/work-day-scheduler
+https://jimgreasley.github.io/work-day-scheduler
 
