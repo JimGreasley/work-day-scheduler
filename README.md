@@ -10,15 +10,19 @@ The current WorkDaySchedule, in JSON format, is retrieved from local storage.
 If no data is returned then an empty work-day-schedule array is created.
 
 The data in the work-day-schedule array is used to create the current day's activities - from 9 AM to 5 PM.
-As each hourly timeslot is dynamically loaded to the page, it is color coded (using special CSS class selectors)to visually designate which timeslots are in the past, in the future, or the current one.
+As each hourly timeslot is dynamically loaded to the page, it is color coded (using CSS class selectors) to visually designate which timeslots are in the past, in the future, or the current one.
 
 Text may be updated in any of the timeslots and saved by clicking its corresponding save button.
 
-All updated text is stored, in JSON format, in local storage.
+All updated text is stored in local storage in JSON format.
 
-Refresing the page will re-display the current day's scheduled activities.
+Refreshing the page will re-display the current day's scheduled activities.
+
+## Technology used
+jQuery, Momentjs, local storage (JSON format)
 
 
-## Link
-https://jimgreasley.github.io/work-day-scheduler/
+## Links
+https://github.com/JimGreasley/Weather-Dashboard
+https://rhubarb-crumble-97219.herokuapp.com
 

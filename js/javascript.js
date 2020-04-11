@@ -50,7 +50,6 @@
         $(".saveBtn").click(saveText);
   
   
-  
         //-----------------------------------------------------------------------------------------
         //  function to create a row for a given timeslot
         //-----------------------------------------------------------------------------------------
@@ -61,9 +60,6 @@
           var elementHourPM = 0;
   
           var newRow = $("<div>").addClass("row time-block");
-  
-          // include "index" as attr in newRow  ??
-          //newRow.attr("index", index); 
   
           // create the columns to hold the timeslot hour, text and save button
   
@@ -81,7 +77,6 @@
           // create textarea element and set its value to the text ("rowText") passed in
   
           var colText = $("<textarea>").addClass("col-10 textarea");
-          //colText.text(rowText);
           colText.val(rowText);
           
           // add class to textarea to indicate whether this timeslot is in the past, present or
@@ -103,14 +98,12 @@
           var colBtn = $("<button>").addClass("col-1 saveBtn");
           colBtn.text("Save text");
   
-          // include "index" as attr in button element
-          colBtn.attr("index", index); 
+          // include 'index' as attr in button element
+          colBtn.attr("data-index", index); 
   
   
           // Append the column elements to the new timeslot row
           newRow.append(colHour, colText, colBtn);
-          //newRow.append(colText);
-          //newRow.append(colBtn);
   
           // Append the new timeslot row to the page (Container element)
           $container.append(newRow);
@@ -125,10 +118,10 @@
           event.preventDefault();  
   
           //console.log($(this).siblings(".textarea").val());
-          //console.log($(this).attr("index"));
+          //console.log($(this).attr("data-index"));
   
           // capture index (typeof 'string') into work-day-schedule array 
-          var idx = $(this).attr("index");
+          var idx = $(this).attr("data-index");
           //console.log(typeof idx);
   
           // save updated text in work_day_schedule array
