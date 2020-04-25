@@ -45,9 +45,12 @@
         // create time slot row for each entry in Work Day Schedule array
         work_day_schedule.forEach(createRow);
   
-  
         // set Event to save text when corresponding save button is clicked
         $(".saveBtn").click(saveText);
+
+        // Append a line break after the last time slot at the bottom of page (Container element)
+        var newLineBreak = $("<br>");
+        $container.append(newLineBreak);
   
   
         //-----------------------------------------------------------------------------------------
